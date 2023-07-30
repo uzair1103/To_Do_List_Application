@@ -12,7 +12,7 @@ class DataOperations {
   }
 
   static Future<void> delete(String id) async {
-    await data.collection('Notes').doc(id).delete();
+    await data.collection('Notess').doc(id).delete();
   }
 
   static Future<void> updateData(String id, String title, String detail) async {
