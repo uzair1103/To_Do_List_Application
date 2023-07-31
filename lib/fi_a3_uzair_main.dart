@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:to_do_list_app/firebase_options.dart';
 
-import 'fi_a3_uzair_main_screen.dart';
+import 'fi_a3_uzair_login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(brightness: Brightness.dark),
-      home: const MainScreen(),
+      home: LoginScreen(),
       //home: DisplayData(),
     );
   }
