@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:to_do_list_app/fi_a3_uzair_add_data_screen.dart';
 import 'package:to_do_list_app/fi_a3_uzair_data_operations.dart';
 import 'package:to_do_list_app/fi_a3_uzair_edit_screen.dart';
+import 'package:to_do_list_app/fi_a3_uzair_add_data_screen.dart';
 
 class DisplayDataScreen extends StatelessWidget {
   const DisplayDataScreen({super.key});
@@ -14,81 +14,97 @@ class DisplayDataScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            navigation(context, AddContentScreen());
-          },
-          backgroundColor: const Color.fromARGB(255, 193, 110, 21),
-          child: const Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          navigation(context, const AddDataScreen());
+        },
+        backgroundColor: const Color.fromARGB(255, 193, 110, 21),
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      appBar: AppBar(
+        title: const Text(
+          "Viewing all tasks",
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        appBar: AppBar(
-          title: const Text(
-            "Viewing all tasks",
-            style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.orange,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: StreamBuilder(
-              stream: data.collection("Notes").snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final response = snapshot.data!.docs[index];
-                      return Dismissible(
-                        key: UniqueKey(),
-                        background: Container(
-                          color: Colors.red,
+        centerTitle: true,
+        backgroundColor: Colors.orange,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: StreamBuilder(
+          stream: data.collection("Notes").snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final response = snapshot.data!.docs[index];
+                  final imageUrl = response['imageUrl'] as String;
+                  return Dismissible(
+                    key: UniqueKey(),
+                    background: Container(
+                      color: Colors.red,
+                    ),
+                    onDismissed: (v) {
+                      DataOperations.delete(response.id);
+                      _showNoteDeletedPopup(context);
+                    },
+                    child: Card(
+                      child: ExpansionTile(
+                        title: Text(
+                          "${response['title']}",
+                          style: const TextStyle(fontSize: 20),
                         ),
-                        onDismissed: (v) {
-                          DataOperations.delete(response.id);
-                          _showNoteDeletedPopup(context);
-                        },
-                        child: Card(
-                          child: ExpansionTile(
-                            title: Text(
-                              "${response['title']}",
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                            leading: IconButton(
-                                onPressed: () {
-                                  navigation(
-                                    context,
-                                    EditContentScreen(
-                                      id: response.id,
-                                      title: response['title'],
-                                      detail: response['detail'],
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(Icons.edit)),
+                        leading: IconButton(
+                            onPressed: () {
+                              navigation(
+                                context,
+                                EditContentScreen(
+                                  id: response.id,
+                                  title: response['title'],
+                                  detail: response['detail'],
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.edit)),
+                        children: [
+                          Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Text(
-                                  "${response['detail']}",
-                                  style: const TextStyle(fontSize: 20),
-                                ),
+                                  padding: const EdgeInsets.all(15),
+                                  child: Text(
+                                    "${response['detail']}",
+                                    style: const TextStyle(fontSize: 20),
+                                  )),
+                              Visibility(
+                                visible: imageUrl.isNotEmpty,
+                                child: Image.network(imageUrl),
                               ),
+                              Visibility(
+                                  visible: imageUrl.isEmpty,
+                                  child: const SizedBox(
+                                      height: 50,
+                                      width: 200,
+                                      child: Text("No image uploaded"))),
                             ],
-                          ),
-                        ),
-                      );
-                    },
+                          )
+                        ],
+                      ),
+                    ),
                   );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              }),
-        ));
+                },
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+      ),
+    );
   }
 }
 

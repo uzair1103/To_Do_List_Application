@@ -41,6 +41,11 @@ dependencies:
   uuid: ^3.0.7
   flutter_screenutil: ^5.8.4
   firebase_auth: ^4.7.2
+  file_picker: ^5.3.3
+  firebase_storage: ^11.2.5
+  permission_handler: ^10.4.3
+  
+
   
    
 
