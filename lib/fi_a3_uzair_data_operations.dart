@@ -3,16 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 FirebaseFirestore data = FirebaseFirestore.instance;
 
 class DataOperations {
-  static Future<void> addData(String title, String detail) async {
+  static Future<void> addData(
+      String title, String detail, String img_url) async {
     data.collection("Notes").add(
-      {"title": title, "detail": detail},
+      {"title": title, "detail": detail, "imageUrl": img_url},
     ).catchError(
       (e) {},
     );
   }
 
   static Future<void> delete(String id) async {
-    await data.collection('Notess').doc(id).delete();
+    await data.collection('Notes').doc(id).delete();
   }
 
   static Future<void> updateData(String id, String title, String detail) async {
