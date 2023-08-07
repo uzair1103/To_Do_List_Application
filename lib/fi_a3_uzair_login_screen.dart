@@ -1,5 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:to_do_list_app/fi_a3_uzair_data_operations.dart';
+import 'package:to_do_list_app/fi_a3_uzair_google_auth.dart';
 import 'package:to_do_list_app/fi_a3_uzair_sign_up_screen.dart';
 
 import 'fi_a3_uzair_main_screen.dart';
@@ -23,7 +27,7 @@ class LoginScreen extends StatelessWidget {
               children: [
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 70),
+                    padding: const EdgeInsets.only(top: 40),
                     child: Container(
                       width: 300,
                       height: 300,
@@ -54,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15),
                       ),
                     )),
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: passC,
                   validator: (v) {
@@ -130,6 +134,15 @@ class LoginScreen extends StatelessWidget {
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
+                ),
+                SizedBox(height: 15),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                  icon: FaIcon(FontAwesomeIcons.google, color: Colors.black),
+                  label: Text("Login with Google"),
+                  onPressed: () {
+                    googleAuth.signInWithGoogle();
+                  },
                 )
               ],
             ),
