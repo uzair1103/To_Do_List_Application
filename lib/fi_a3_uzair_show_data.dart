@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:to_do_list_app/fi_a3_uzair_data_operations.dart';
 import 'package:to_do_list_app/fi_a3_uzair_edit_screen.dart';
@@ -34,7 +35,11 @@ class DisplayDataScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: StreamBuilder(
-          stream: data.collection("Notes").snapshots(),
+          stream: data
+              .collection("Notes")
+              .where("Email",
+                  isEqualTo: FirebaseAuth.instance.currentUser!.email)
+              .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(

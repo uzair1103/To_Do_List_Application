@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:to_do_list_app/fi_a3_uzair_data_operations.dart';
 
 import 'fi_a3_uzair_login_screen.dart';
 import 'fi_a3_uzair_main_screen.dart';
@@ -25,7 +26,7 @@ class SignUpScreen extends StatelessWidget {
               children: [
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 70),
+                    padding: const EdgeInsets.only(top: 40),
                     child: Container(
                       width: 300,
                       height: 300,
@@ -87,6 +88,7 @@ class SignUpScreen extends StatelessWidget {
                             .instance
                             .createUserWithEmailAndPassword(
                                 email: emailC.text, password: passC.text);
+                        DataOperations.addUser(emailC.text);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
